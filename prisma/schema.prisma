@@ -20,6 +20,7 @@ model User {
   password  String
   name      String
   tasks     Task[]
+  RefreshToken RefreshToken[]
 } 
 model Task {
   id          Int      @id @default(autoincrement())
@@ -28,4 +29,13 @@ model Task {
   status      String   @default("PENDING")
   userId      Int
   user        User     @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken{
+  id  Int   @id @default(autoincrement())
+  token String
+  user  User  @relation(fields: [userId],references: [id],onDelete: Cascade)
+  userId  Int
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 }

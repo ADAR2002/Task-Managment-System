@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTaskEntity } from './Entity/create-task.entity';
@@ -27,13 +27,13 @@ export class TasksController {
     @ApiOperation({ summary: 'Remove a task' })
     @ApiResponse({ status: 200, description: 'The task has been successfully removed.' })
     @Delete(':id')
-    async removeTask(@Param('id') id : number , @GetUser() userId): Promise<string> {
+    async removeTask(@Param('id',ParseIntPipe) id : number , @GetUser() userId): Promise<string> {
         return await this.tasksService.removeTask(id,userId.id);
     }
     @ApiOperation({ summary: 'Update a task' })
     @ApiResponse({ status: 200, description: 'The task has been successfully updated.' })
     @Patch(':id')
-    async updateTask(@Param('id') id : number ,@GetUser() userId,@Body() body) : Promise<string> {
+    async updateTask(@Param('id',ParseIntPipe) id : number ,@GetUser() userId,@Body() body) : Promise<string> {
         return await this.tasksService.updateTask(id, userId.id,body);
     }
 }

@@ -15,11 +15,7 @@ export class UsersController {
     @ApiResponse({ status: 200, description: 'Returns the details of the currently logged-in user.' })
     @Get('me')
     async me(@GetUser() user): Promise<CreateUserEntity> {
-        try {
         return await this.usersService.me(user.id);
-        } catch (error) {
-            throw error;
-        }
     }
 }
 

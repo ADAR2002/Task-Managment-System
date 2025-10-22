@@ -1,5 +1,6 @@
 export class LoginUserEntity {
-    token: string;
+    accessToken: string;
+    refreshToken: string;
     constructor(partial: Partial<LoginUserEntity>) {
         Object.assign(this, partial);
     }

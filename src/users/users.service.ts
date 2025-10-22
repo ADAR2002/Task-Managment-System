@@ -9,12 +9,12 @@ export class UsersService {
     constructor(private prisma: PrismaService) { }
 
     async me(id): Promise<CreateUserEntity> {
-        if(!id){
-            throw new HttpException("you need to login",500);
+        if (!id) {
+            throw new HttpException("you need to login", 500);
         }
-        const user = await this.prisma.user.findFirst({
+        const user = await this.prisma.safeExecute(this.prisma.user.findFirst({
             where: { id },
-        });
+        }));
         if (!user) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
