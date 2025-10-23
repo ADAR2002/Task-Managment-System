@@ -26,9 +26,15 @@ model Task {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
-  status      String   @default("PENDING")
+  status      TaskStatus   @default(PENDING)
   userId      Int
   user        User     @relation(fields: [userId], references: [id])
+}
+
+enum TaskStatus{
+  PENDING
+  IN_PROGRESS
+  DONE
 }
 
 model RefreshToken{
