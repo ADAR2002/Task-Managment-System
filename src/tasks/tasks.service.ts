@@ -56,6 +56,23 @@ export class TasksService {
         return tasks.map(task => new CreateTaskEntity(task));
     }
     //----------------------------------------------------------------------------------------------------------------------------------------------------
+    async getTask(id: number, userId: number) {
+        const task = await this.prisma.safeExecute(this.prisma.task.findUnique({ where: { id } }));
+        this.policy.canAccess(userId, task);
+
+        const newTask =  await this.prisma.safeExecute(this.prisma.task.findFirst({
+            where: { id },
+            include: {
+                Attachment:true,
+                Comment: {
+                    include: { user: { select: { id: true, name: true } } },
+                    orderBy: { createdAt: 'asc' },
+                },
+            },
+        }));
+        return newTask;
+    }
+    //----------------------------------------------------------------------------------------------------------------------------------------------------
     async removeTask(id: number, userId: any): Promise<string> {
         const ok = await this.prisma.safeExecute(this.prisma.task.delete({
             where: { id, userId },

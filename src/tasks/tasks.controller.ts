@@ -64,6 +64,13 @@ export class TasksController {
         return await this.tasksService.updateTask(id, userId.id, body);
     }
     //------------------------------------------------------------------------------------------------------------------------------------------------------
+    @ApiOperation({ summary: 'Get a task' })
+    @ApiResponse({ status: 200})
+    @Get(':id')
+    async getTask(@Param('id', ParseIntPipe) id: number, @GetUser() userId){
+        return await this.tasksService.getTask(id, userId.id);
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------------------------
     @Post(":id/attachments")
     @ApiOperation({ summary: 'رفع عدة ملفات دفعة واحدة' })
     @ApiConsumes('multipart/form-data')
